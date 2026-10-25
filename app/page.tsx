@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useState } from "react";
+import { Icon } from "@/components/icon";
 
 type Decision = {
   id: number;
@@ -89,7 +90,7 @@ export default function Home() {
     <main className="app-shell">
       <header className="topbar">
         <Link className="brand" href="/" aria-label="Decision Trail home">
-          <span className="brand-mark"><span /></span>
+          <span className="brand-mark"><Icon name="idea" size={18} /></span>
           <span>decision trail</span>
         </Link>
         <div className="topbar-right">
@@ -107,7 +108,7 @@ export default function Home() {
             <p className="page-intro">A clear record of what we chose, why we chose it, and what we’ll learn next.</p>
           </div>
           <button className="button button-primary" onClick={() => setShowForm(true)} disabled={readOnly}>
-            <span className="plus">+</span> Add decision
+            <Icon name="plus" size={17} /> Add decision
           </button>
         </div>
 
@@ -144,13 +145,13 @@ export default function Home() {
             <div className="decision-list">
               {decisions.map((decision, index) => (
                 <Link className="decision-card" href={`/decisions/${decision.id}`} key={decision.id}>
-                  <div className="decision-index">{String(index + 1).padStart(2, "0")}</div>
+                  <div className={`decision-index decision-index-${decision.status}`}><Icon name={decision.status === "decided" ? "choice" : decision.status === "proposed" ? "idea" : "why"} size={20} /><span>{String(index + 1).padStart(2, "0")}</span></div>
                   <div className="decision-main">
                     <div className="decision-title-row"><h2>{decision.title}</h2><span className={`status-pill status-${decision.status}`}>{statusLabels[decision.status]}</span></div>
                     <p className="decision-problem">{decision.problem}</p>
-                    <div className="decision-choice"><span className="choice-label">CHOSEN</span><span>{decision.chosenOption}</span></div>
+                    <div className="decision-choice"><Icon name="choice" size={15} /><span>{decision.chosenOption}</span></div>
                   </div>
-                  <div className="decision-meta"><span>{dateLabel(decision.createdAt)}</span><span className="card-arrow">↗</span></div>
+                  <div className="decision-meta"><span className="decision-date"><Icon name="calendar" size={14} />{dateLabel(decision.createdAt)}</span><span className="card-arrow"><Icon name="arrow" size={18} /></span></div>
                 </Link>
               ))}
             </div>
